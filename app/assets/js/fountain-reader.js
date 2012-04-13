@@ -34,6 +34,7 @@
 
           var file   = e.dataTransfer.files[0]
             , reader = new FileReader();
+          console.log(file, reader);
  
           if (file) {  
             reader.onload = function(evt) {
@@ -118,17 +119,16 @@
         $app.on('fountain-js:loaded', function (e, file) {
           $dock.hide();
           $script.empty();
-          fountain.parse(file, function (result) {
-            if (result) {
-              if (result.title && result.html.title_page) {
-                $script.append(page(result.html.title_page, true));
-                $title.html(result.title || 'Untitled');
-              }
-              $script.append(page(result.html.script));
-              $workspace.fadeIn();
-              notify($title.text() + ' loaded!');
-            }          
-          }); 
+          result = fountain(file)
+          if (result) {
+            if (result.title && result.html.title_page) {
+              $script.append(page(result.html.title_page, true));
+              $title.html(result.title || 'Untitled');
+            }
+            $script.append(page(result.html.script));
+            $workspace.fadeIn();
+            notify($title.text() + ' loaded!');
+          }  
         });
       });    
     }   
